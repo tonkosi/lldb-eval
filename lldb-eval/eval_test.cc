@@ -1198,10 +1198,19 @@ TEST_F(EvalTest, TestUnscopedEnum) {
   EXPECT_THAT(Eval("enum_two >> 1"), IsEqual("1"));
   EXPECT_THAT(Eval("enum_two << 1"), IsEqual("4"));
   EXPECT_THAT(Eval("+enum_one"), IsEqual("1"));
-  EXPECT_THAT(Eval("-enum_one"), IsEqual("-1"));
   EXPECT_THAT(Eval("!enum_one"), IsEqual("false"));
   EXPECT_THAT(Eval("(int*)1 + enum_one"), IsEqual("0x0000000000000005"));
   EXPECT_THAT(Eval("(int*)5 - enum_one"), IsEqual("0x0000000000000001"));
+}
+
+TEST_F(EvalTest, TestUnscopedEnumNegation) {
+  // Sometimes LLDB is confused about signedness and uses "unsigned int" as an
+  // underlying type. Technically, underlying type for the unscoped enum is
+  // implementation defined, but it should convert to "int" nonetheless.
+  this->compare_with_lldb_ = false;
+
+  EXPECT_THAT(Eval("-enum_one"), IsEqual("-1"));
+  EXPECT_THAT(Eval("-(UnscopedEnumEmpty)1"), IsOk());
 }
 
 TEST_F(EvalTest, TestUnscopedEnumWithUnderlyingType) {

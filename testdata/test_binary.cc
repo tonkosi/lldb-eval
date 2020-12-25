@@ -510,6 +510,7 @@ void TestUnscopedEnum() {
   UnscopedEnumEmpty enum_empty;
 
   // BREAK(TestUnscopedEnum)
+  // BREAK(TestUnscopedEnumNegation)
   // BREAK(TestUnscopedEnumWithUnderlyingType)
   // BREAK(TestUnscopedEnumEmpty)
 }
